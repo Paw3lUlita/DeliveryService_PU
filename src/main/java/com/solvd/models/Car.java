@@ -5,8 +5,7 @@ public class Car {
     private String model;
     private int capacity;
 
-    public Car(long id, String model, int capacity) {
-        this.id = id;
+    public Car(String model, int capacity) {
         this.model = model;
         this.capacity = capacity;
     }
