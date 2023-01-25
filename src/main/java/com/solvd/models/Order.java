@@ -5,8 +5,7 @@ public class Order {
     private User user;
     private Delivery delivery;
 
-    public Order(long id, User user, Delivery delivery) {
-        this.id = id;
+    public Order(User user, Delivery delivery) {
         this.user = user;
         this.delivery = delivery;
     }
