@@ -85,11 +85,8 @@ public class AddressDAO extends AbstractMySQLDAO implements IAddressDAO {
             return address;
 
         } catch (SQLException e) {
-
             e.printStackTrace();
-
             return null;
-
         }
     }
 

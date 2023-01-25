@@ -11,11 +11,10 @@ public class Main {
         UserDAO userDAO = new UserDAO();
         Address address = addressDAO.getEntityById(8);
         User user = new User("Pawel", "Ulita",
-                "56786565", "opkokokok", address );
+                "56786565", "opkokokok", address);
 
         user = userDAO.createEntity(user);
         System.out.println(user);
         System.out.println(user.getAddress());
     }
-
 }

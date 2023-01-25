@@ -5,8 +5,7 @@ public class Delivery {
     private User user;
     private Address address;
 
-    public Delivery(long id, User user, Address address) {
-        this.id = id;
+    public Delivery(User user, Address address) {
         this.user = user;
         this.address = address;
     }
