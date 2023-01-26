@@ -24,7 +24,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public void updateUser (User user) {
+    public void updateUser(User user) {
         userDAO.updateEntity(user);
     }
 
