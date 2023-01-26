@@ -37,6 +37,7 @@ public class CarDAO extends AbstractMySQLDAO implements ICarDAO {
 
                 Car car = new Car(model, capacity);
                 car.setId(id);
+                pool.returnConnection(conn);
                 return car;
             }
 
@@ -55,6 +56,7 @@ public class CarDAO extends AbstractMySQLDAO implements ICarDAO {
             statement.setInt(2, car.getCapacity());
 
             statement.executeUpdate();
+            pool.returnConnection(conn);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,6 +81,7 @@ public class CarDAO extends AbstractMySQLDAO implements ICarDAO {
                car.setId(resultSet.getInt(1));
             }
 
+            pool.returnConnection(conn);
             return car;
 
         } catch (SQLException e) {
@@ -93,6 +96,7 @@ public class CarDAO extends AbstractMySQLDAO implements ICarDAO {
             PreparedStatement statement = conn.prepareStatement(DELETE_CAR_QUERY);
             statement.setLong(1, carId);
             statement.executeUpdate();
+            pool.returnConnection(conn);
 
         } catch (SQLException e) {
             e.printStackTrace();

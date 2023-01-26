@@ -48,6 +48,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO {
                 Address address = addressDAO.getEntityById(addressId);
                 User user1 = new User(name, surname, phoneNumber, email, address);
                 user1.setId(id);
+                pool.returnConnection(conn);
                 return user1;
             }
 
@@ -70,6 +71,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO {
             statement.setLong(6, user.getId());
 
             statement.executeUpdate();
+            pool.returnConnection(conn);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,15 +98,12 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO {
             if (resultSet.next()) {
                 user.setId(resultSet.getInt(1));
             }
-
+            pool.returnConnection(conn);
             return user;
 
         } catch (SQLException e) {
-
             e.printStackTrace();
-
             return null;
-
         }
     }
 
@@ -114,6 +113,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO {
             PreparedStatement statement = conn.prepareStatement(DELETE_USER_QUERY);
             statement.setLong(1, userId);
             statement.executeUpdate();
+            pool.returnConnection(conn);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -141,6 +141,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO {
                 allUsers.add(user1);
 
             }
+            pool.returnConnection(conn);
             return allUsers;
 
         } catch (SQLException e) {

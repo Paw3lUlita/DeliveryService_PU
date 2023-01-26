@@ -42,6 +42,7 @@ public class DeliveryDAO extends AbstractMySQLDAO implements IDeliveryDAO {
                 Address address = addressDAO.getEntityById(address_id);
                 Delivery delivery = new Delivery(user, address);
                 delivery.setId(id);
+                pool.returnConnection(conn);
                 return delivery;
             }
 
@@ -60,6 +61,7 @@ public class DeliveryDAO extends AbstractMySQLDAO implements IDeliveryDAO {
             statement.setLong(2, delivery.getAddress().getId());
 
             statement.executeUpdate();
+            pool.returnConnection(conn);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,6 +85,7 @@ public class DeliveryDAO extends AbstractMySQLDAO implements IDeliveryDAO {
                 delivery.setId(resultSet.getInt(1));
             }
 
+            pool.returnConnection(conn);
             return delivery;
 
         } catch (SQLException e) {
@@ -97,6 +100,7 @@ public class DeliveryDAO extends AbstractMySQLDAO implements IDeliveryDAO {
             PreparedStatement statement = conn.prepareStatement(DELETE_DELIVERY_QUERY);
             statement.setLong(1, deliveryId);
             statement.executeUpdate();
+            pool.returnConnection(conn);
 
         } catch (SQLException e) {
             e.printStackTrace();

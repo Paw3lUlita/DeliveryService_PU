@@ -37,6 +37,7 @@ public class AddressDAO extends AbstractMySQLDAO implements IAddressDAO {
                 int id = rs.getInt("id");
                 Address address = new Address(street, houseNumber, postcode);
                 address.setId(id);
+                pool.returnConnection(conn);
                 return address;
             }
 
@@ -57,6 +58,7 @@ public class AddressDAO extends AbstractMySQLDAO implements IAddressDAO {
             statement.setLong(4, address.getId());
 
             statement.executeUpdate();
+            pool.returnConnection(conn);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,6 +84,7 @@ public class AddressDAO extends AbstractMySQLDAO implements IAddressDAO {
                 address.setId(resultSet.getInt(1));
             }
 
+            pool.returnConnection(conn);
             return address;
 
         } catch (SQLException e) {
@@ -96,6 +99,7 @@ public class AddressDAO extends AbstractMySQLDAO implements IAddressDAO {
             PreparedStatement statement = conn.prepareStatement(DELETE_ADDRESS_QUERY);
             statement.setLong(1, addressId);
             statement.executeUpdate();
+            pool.returnConnection(conn);
 
         } catch (SQLException e) {
             e.printStackTrace();

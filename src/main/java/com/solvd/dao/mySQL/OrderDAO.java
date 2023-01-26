@@ -8,6 +8,8 @@ import com.solvd.models.User;
 import com.solvd.pool.ConnectionPool;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDAO extends AbstractMySQLDAO implements IOrderDAO {
     private static final String READ_ORDER_QUERY = "SELECT * FROM orders WHERE id = ?";
@@ -20,6 +22,9 @@ public class OrderDAO extends AbstractMySQLDAO implements IOrderDAO {
 
     private static final String DELETE_ORDER_QUERY =
             "DELETE FROM orders WHERE id = ?";
+
+    private static final String FIND_ALL_QUERY =
+            "SELECT * FROM orders";
 
     ConnectionPool pool = ConnectionPool.getInstance();
     UserDAO userDAO = new UserDAO();
@@ -34,14 +39,15 @@ public class OrderDAO extends AbstractMySQLDAO implements IOrderDAO {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                int userId = rs.getInt("user_id");
-                int deliveryId = rs.getInt("delivery_id");
+                long userId = rs.getLong("user_id");
+                long deliveryId = rs.getLong("delivery_id");
 
-                int id = rs.getInt("id");
+                long id = rs.getLong("id");
                 User user = userDAO.getEntityById(userId);
                 Delivery delivery = deliveryDAO.getEntityById(deliveryId);
                 Order order = new Order(user, delivery);
                 order.setId(id);
+                pool.returnConnection(conn);
                 return order;
             }
 
@@ -60,6 +66,7 @@ public class OrderDAO extends AbstractMySQLDAO implements IOrderDAO {
             statement.setLong(2, order.getDelivery().getId());
 
             statement.executeUpdate();
+            pool.returnConnection(conn);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,7 +89,7 @@ public class OrderDAO extends AbstractMySQLDAO implements IOrderDAO {
             if (resultSet.next()) {
                 order.setId(resultSet.getInt(1));
             }
-
+            pool.returnConnection(conn);
             return order;
 
         } catch (SQLException e) {
@@ -97,9 +104,37 @@ public class OrderDAO extends AbstractMySQLDAO implements IOrderDAO {
             PreparedStatement statement = conn.prepareStatement(DELETE_ORDER_QUERY);
             statement.setLong(1, orderId);
             statement.executeUpdate();
+            pool.returnConnection(conn);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Order> getAllOrders() {
+        try (Connection conn = pool.getConnection()) {
+            List<Order> allOrders = new ArrayList<>();
+            PreparedStatement statement = conn.prepareStatement(FIND_ALL_QUERY);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                long userId = rs.getLong("user_id");
+                long deliveryId = rs.getLong("delivery_id");
+
+                long id = rs.getLong("id");
+                User user = userDAO.getEntityById(userId);
+                Delivery delivery = deliveryDAO.getEntityById(deliveryId);
+                Order order = new Order(user, delivery);
+                order.setId(id);
+                allOrders.add(order);
+
+            }
+            pool.returnConnection(conn);
+            return allOrders;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
