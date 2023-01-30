@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<addresses>
+    <address id="8">
+        <street>Some Street</street>
+        <house_number>23</house_number>
+        <postcode>ert564</postcode>
+    </address>
+</addresses>
