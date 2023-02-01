@@ -12,9 +12,16 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
@@ -29,6 +36,7 @@ public class Main {
             e.printStackTrace();
         }
 
+        System.out.println("User from DOM parser: ");
         System.out.println("name: " + doc.getElementsByTagName("name").item(0).getTextContent());
         System.out.println("surname: " + doc.getElementsByTagName("surname").item(0).getTextContent());
         System.out.println("phoneNumber: " + doc.getElementsByTagName("phoneNumber").item(0).getTextContent());
@@ -39,5 +47,19 @@ public class Main {
         System.out.println(doc.getElementsByTagName("street").item(0).getTextContent());
         System.out.println(doc.getElementsByTagName("house_number").item(0).getTextContent());
         System.out.println(doc.getElementsByTagName("postcode").item(0).getTextContent());
+        System.out.println("------------------------------");
+
+        User u = new User();
+        try {
+            JAXBContext context = JAXBContext.newInstance(User.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            u = (User) unmarshaller.unmarshal(new FileReader("src/main/resources/xml_files/user.xml"));
+        } catch (JAXBException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("User from JAXB: ");
+        System.out.println(u);
+        System.out.println(u.getAddress());
     }
 }

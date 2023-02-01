@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<deliveries>
     <delivery id="3">
         <user id="1">
             <name>Pawel</name>
@@ -18,4 +17,3 @@
             <postcode>456ytr</postcode>
         </address>
     </delivery>
-</deliveries>

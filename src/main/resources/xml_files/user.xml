@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<users>
     <user id="1">
         <name>Pawel</name>
         <surname>Ulita</surname>
@@ -11,4 +10,4 @@
             <postcode>ert564</postcode>
         </address>
     </user>
-</users>
+

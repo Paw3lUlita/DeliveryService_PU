@@ -1,5 +1,4 @@
 <?xml version="1.0" ?>
-<orders>
     <order id = "4">
         <user id="1">
             <name>Pawel</name>
@@ -31,4 +30,3 @@
             </address>
         </delivery>
     </order>
-</orders>
