@@ -1,5 +1,7 @@
 package com.solvd.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,6 +21,7 @@ public class Address {
 
     public Address() {};
 
+    @JsonProperty("id")
     @XmlAttribute(name = "id")
     public long getId() {
         return id;
@@ -28,6 +31,7 @@ public class Address {
         this.id = id;
     }
 
+    @JsonProperty("street")
     @XmlElement(name = "street")
     public String getStreet() {
         return street;
@@ -37,6 +41,7 @@ public class Address {
         this.street = street;
     }
 
+    @JsonProperty("house_number")
     @XmlElement(name = "house_number")
     public int getHouse_number() {
         return house_number;
@@ -46,6 +51,7 @@ public class Address {
         this.house_number = house_number;
     }
 
+    @JsonProperty("postcode")
     @XmlElement(name = "postcode")
     public String getPostcode() {
         return postcode;

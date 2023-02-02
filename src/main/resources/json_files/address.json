@@ -1,8 +1,7 @@
-{
-  "address": {
+ {
     "id": 8,
     "street": "Some Street",
     "house_number": 23,
     "postcode": "ert564"
   }
-}
+

@@ -2,6 +2,7 @@
   "delivery": {
     "id": 3,
     "user": {
+      "id": 1,
       "name": "Pawel",
       "surname": "Ulita",
       "phoneNumber": 56786565,
