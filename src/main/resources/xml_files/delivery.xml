@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+    <delivery id="3">
+        <user id="1">
+            <name>Pawel</name>
+            <surname>Ulita</surname>
+            <phoneNumber>56786565</phoneNumber>
+            <email>opkokokok</email>
+            <address id="8">
+                <street>Some Street</street>
+                <house_number>23</house_number>
+                <postcode>ert564</postcode>
+            </address>
+        </user>
+        <address id="9">
+            <street>Baker Street</street>
+            <house_number>56</house_number>
+            <postcode>456ytr</postcode>
+        </address>
+    </delivery>

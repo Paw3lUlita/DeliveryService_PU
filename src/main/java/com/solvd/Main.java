@@ -8,18 +8,58 @@ import com.solvd.services.AddressService;
 import com.solvd.services.DeliveryService;
 import com.solvd.services.OrderService;
 import com.solvd.services.UserService;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        UserService userService = new UserService();
-        OrderService orderService = new OrderService();
-        DeliveryService deliveryService = new DeliveryService();
-        AddressService addressService = new AddressService();
+        Document doc = null;
+        try {
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            doc = builder.parse("src/main/resources/xml_files/user.xml");
+            Node userNode = doc.getElementsByTagName("user").item(0);
+            System.out.println("user id: " + userNode.getAttributes().getNamedItem("id").getTextContent());
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
 
-        User user = userService.getUserById(1);
-        Address address = addressService.getAddressById(9);
-        orderService.addOrderForUser(user, address);
+        System.out.println("User from DOM parser: ");
+        System.out.println("name: " + doc.getElementsByTagName("name").item(0).getTextContent());
+        System.out.println("surname: " + doc.getElementsByTagName("surname").item(0).getTextContent());
+        System.out.println("phoneNumber: " + doc.getElementsByTagName("phoneNumber").item(0).getTextContent());
+        System.out.println("email: " + doc.getElementsByTagName("email").item(0).getTextContent());
+        System.out.println("Address: ");
+        System.out.println("address id: " + doc.getElementsByTagName("address").item(0)
+                .getAttributes().getNamedItem("id").getTextContent());
+        System.out.println(doc.getElementsByTagName("street").item(0).getTextContent());
+        System.out.println(doc.getElementsByTagName("house_number").item(0).getTextContent());
+        System.out.println(doc.getElementsByTagName("postcode").item(0).getTextContent());
+        System.out.println("------------------------------");
 
-        orderService.getAllOrders().forEach(System.out::println);
+        User u = new User();
+        try {
+            JAXBContext context = JAXBContext.newInstance(User.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            u = (User) unmarshaller.unmarshal(new FileReader("src/main/resources/xml_files/user.xml"));
+        } catch (JAXBException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("User from JAXB: ");
+        System.out.println(u);
+        System.out.println(u.getAddress());
     }
 }

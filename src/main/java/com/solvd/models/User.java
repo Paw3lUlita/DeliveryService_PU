@@ -1,5 +1,10 @@
 package com.solvd.models;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "user")
 public class User {
     private long id;
     private String name;
@@ -18,6 +23,7 @@ public class User {
 
     public User() {}
 
+    @XmlAttribute(name = "id")
     public long getId() {
         return id;
     }
@@ -26,6 +32,7 @@ public class User {
         this.id = id;
     }
 
+    @XmlElement(name = "name")
     public String getName() {
         return name;
     }
@@ -34,6 +41,7 @@ public class User {
         this.name = name;
     }
 
+    @XmlElement(name = "surname")
     public String getSurname() {
         return surname;
     }
@@ -42,6 +50,7 @@ public class User {
         this.surname = surname;
     }
 
+    @XmlElement(name = "phoneNumber")
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -50,6 +59,7 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    @XmlElement(name = "email")
     public String getEmail() {
         return email;
     }
@@ -58,6 +68,7 @@ public class User {
         this.email = email;
     }
 
+    @XmlElement(name = "address")
     public Address getAddress() {
         return address;
     }

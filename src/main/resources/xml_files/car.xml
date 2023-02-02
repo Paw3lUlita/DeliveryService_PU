@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+    <car id="2">
+        <model>Iveco daily</model>
+        <capacity>100</capacity>
+    </car>
+
