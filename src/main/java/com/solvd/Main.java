@@ -8,6 +8,7 @@ import com.solvd.services.AddressService;
 import com.solvd.services.DeliveryService;
 import com.solvd.services.OrderService;
 import com.solvd.services.UserService;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -26,40 +27,8 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        Document doc = null;
-        try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            doc = builder.parse("src/main/resources/xml_files/user.xml");
-            Node userNode = doc.getElementsByTagName("user").item(0);
-            System.out.println("user id: " + userNode.getAttributes().getNamedItem("id").getTextContent());
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
-        }
+        AddressService addressService = new AddressService();
 
-        System.out.println("User from DOM parser: ");
-        System.out.println("name: " + doc.getElementsByTagName("name").item(0).getTextContent());
-        System.out.println("surname: " + doc.getElementsByTagName("surname").item(0).getTextContent());
-        System.out.println("phoneNumber: " + doc.getElementsByTagName("phoneNumber").item(0).getTextContent());
-        System.out.println("email: " + doc.getElementsByTagName("email").item(0).getTextContent());
-        System.out.println("Address: ");
-        System.out.println("address id: " + doc.getElementsByTagName("address").item(0)
-                .getAttributes().getNamedItem("id").getTextContent());
-        System.out.println(doc.getElementsByTagName("street").item(0).getTextContent());
-        System.out.println(doc.getElementsByTagName("house_number").item(0).getTextContent());
-        System.out.println(doc.getElementsByTagName("postcode").item(0).getTextContent());
-        System.out.println("------------------------------");
-
-        User u = new User();
-        try {
-            JAXBContext context = JAXBContext.newInstance(User.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            u = (User) unmarshaller.unmarshal(new FileReader("src/main/resources/xml_files/user.xml"));
-        } catch (JAXBException | FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("User from JAXB: ");
-        System.out.println(u);
-        System.out.println(u.getAddress());
+        System.out.println(addressService.getById(8L));
     }
 }
