@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.io.Reader;
 
 public class AddressService {
-
     SqlSessionFactory sqlSessionFactory;
+
     public AddressService() {
         try {
             Reader reader = Resources.getResourceAsReader("myBatis_config.xml");
@@ -26,7 +26,6 @@ public class AddressService {
         }
 
     }
-
 
     public Address getById(Long id) {
         Address address;
@@ -53,6 +52,39 @@ public class AddressService {
                 e.printStackTrace();
             }
             return address;
+    }
 
+    public void updateAddress(Address address) {
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IAddressDAO addressDAO = sqlSession.getMapper(IAddressDAO.class);
+
+            try {
+                addressDAO.updateEntity(address);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeAddressById(long id) {
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IAddressDAO addressDAO = sqlSession.getMapper(IAddressDAO.class);
+
+            try {
+                addressDAO.removeEntity(id);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

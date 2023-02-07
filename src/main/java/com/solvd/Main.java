@@ -27,10 +27,13 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
+        UserService userService = new UserService();
         AddressService addressService = new AddressService();
 
-        Address address = new Address("Oxford Street", 987, "POKD56");
+        Address address = userService.getById(1L).getAddress();
+        address.setHouse_number(666);
+        addressService.updateAddress(address);
 
-        System.out.println(addressService.saveAddress(address));
+        System.out.println(userService.getById(1L).getAddress());
     }
 }

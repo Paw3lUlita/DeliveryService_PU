@@ -22,6 +22,18 @@
         INSERT INTO addresses (street, house_number, postcode)
         VALUES (#{street}, #{house_number}, #{postcode})
     </insert>
+    
+    <update id="updateEntity">
+        UPDATE addresses SET
+        street = #{street},
+        house_number = #{house_number},
+        postcode = #{postcode}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="removeEntity">
+        DELETE FROM addresses WHERE id = #{id}
+    </delete>
 
     <resultMap id="addressResultMap" type="com.solvd.models.Address" autoMapping="false">
         <id column="address_id" property="id"/>
