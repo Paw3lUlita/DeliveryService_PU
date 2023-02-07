@@ -12,6 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
 
 public class UserService {
     SqlSessionFactory sqlSessionFactory;
@@ -34,4 +35,60 @@ public class UserService {
         }
         return user;
     }
+
+    public List<User> getAllUsers() {
+        List<User> resulList;
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+            resulList = userDAO.getAllUsers();
+        }
+        return resulList;
+    }
+
+    public User saveUser(User user) {
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+            try {
+                userDAO.createEntity(user);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public void updateUser(User user) {
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+            try {
+                userDAO.updateEntity(user);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeUserById(long id) {
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+            try {
+                userDAO.removeEntity(id);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
