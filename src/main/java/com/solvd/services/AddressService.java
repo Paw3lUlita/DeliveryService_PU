@@ -2,8 +2,10 @@ package com.solvd.services;
 
 import com.solvd.dao.interfaces.IAddressDAO;
 import com.solvd.dao.mySQL.CarDAO;
+import com.solvd.dao.mySQL.UserDAO;
 import com.solvd.models.Address;
 import com.solvd.models.Car;
+import com.solvd.models.User;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -33,5 +35,24 @@ public class AddressService {
             address = addressDAO.getEntityById(id);
         }
         return address;
+    }
+
+    public Address saveAddress(Address address) {
+            try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+                IAddressDAO addressDAO = sqlSession.getMapper(IAddressDAO.class);
+
+                try {
+                    addressDAO.createEntity(address);
+                    sqlSession.commit();
+                } catch (Exception e) {
+                    sqlSession.rollback();
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return address;
+
     }
 }

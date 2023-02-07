@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "org/apache/ibatis/builder/xml/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.dao.interfaces.IAddressDAO">
+
+    <sql id="body">
+        a.id as address_id,
+        a.street as address_street,
+        a.house_number as address_house_number,
+        a.postcode as address_postcode
+    </sql>
+
+    <select id="getEntityById" resultMap="addressResultMap">
+        SELECT
+        <include refid="body"/>
+        FROM
+        addresses a
+        WHERE id = #{id}
+    </select>
+
+    <insert id="createEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO addresses (street, house_number, postcode)
+        VALUES (#{street}, #{house_number}, #{postcode})
+    </insert>
+
+    <resultMap id="addressResultMap" type="com.solvd.models.Address" autoMapping="false">
+        <id column="address_id" property="id"/>
+        <result column="address_street" property="street"/>
+        <result column="address_house_number" property="house_number"/>
+        <result column="address_postcode" property="postcode"/>
+    </resultMap>
+</mapper>

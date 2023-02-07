@@ -79,7 +79,7 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO {
     }
 
     @Override
-    public User createEntity(User user) {
+    public void createEntity(User user) {
         try (Connection conn = pool.getConnection()) {
 
             PreparedStatement statement =
@@ -99,11 +99,9 @@ public class UserDAO extends AbstractMySQLDAO implements IUserDAO {
                 user.setId(resultSet.getInt(1));
             }
             pool.returnConnection(conn);
-            return user;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 

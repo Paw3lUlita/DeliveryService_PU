@@ -66,7 +66,7 @@ public class AddressDAO extends AbstractMySQLDAO implements IAddressDAO {
     }
 
     @Override
-    public Address createEntity(Address address) {
+    public void createEntity(Address address) {
         try (Connection conn = pool.getConnection()) {
 
             PreparedStatement statement =
@@ -85,11 +85,9 @@ public class AddressDAO extends AbstractMySQLDAO implements IAddressDAO {
             }
 
             pool.returnConnection(conn);
-            return address;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 

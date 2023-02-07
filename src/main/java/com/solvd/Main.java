@@ -29,6 +29,8 @@ public class Main {
     public static void main(String[] args) {
         AddressService addressService = new AddressService();
 
-        System.out.println(addressService.getById(8L));
+        Address address = new Address("Oxford Street", 987, "POKD56");
+
+        System.out.println(addressService.saveAddress(address));
     }
 }

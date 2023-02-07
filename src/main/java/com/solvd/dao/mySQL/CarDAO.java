@@ -64,7 +64,7 @@ public class CarDAO extends AbstractMySQLDAO implements ICarDAO {
     }
 
     @Override
-    public Car createEntity(Car car) {
+    public void createEntity(Car car) {
         try (Connection conn = pool.getConnection()) {
 
             PreparedStatement statement =
@@ -82,11 +82,9 @@ public class CarDAO extends AbstractMySQLDAO implements ICarDAO {
             }
 
             pool.returnConnection(conn);
-            return car;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 

@@ -69,7 +69,7 @@ public class DeliveryDAO extends AbstractMySQLDAO implements IDeliveryDAO {
     }
 
     @Override
-    public Delivery createEntity(Delivery delivery) {
+    public void createEntity(Delivery delivery) {
         try (Connection conn = pool.getConnection()) {
 
             PreparedStatement statement =
@@ -86,11 +86,9 @@ public class DeliveryDAO extends AbstractMySQLDAO implements IDeliveryDAO {
             }
 
             pool.returnConnection(conn);
-            return delivery;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
