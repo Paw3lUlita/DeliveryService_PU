@@ -4,6 +4,7 @@
 <mapper namespace="com.solvd.dao.interfaces.IOrderDAO">
 
     <sql id="body">
+        o.id as order_id,
         o.user_id as user_id,
         o.delivery_id as delivery_id
     </sql>

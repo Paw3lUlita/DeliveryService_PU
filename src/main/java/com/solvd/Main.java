@@ -29,13 +29,17 @@ public class Main {
     public static void main(String[] args) {
         UserService userService = new UserService();
         AddressService addressService = new AddressService();
+        OrderService orderService = new OrderService();
+        DeliveryService deliveryService = new DeliveryService();
 
-        /*Address address = userService.getById(1L).getAddress();
-        address.setHouse_number(666);
+        Address address = userService.getById(1L).getAddress();
+        address.setHouse_number(111);
         addressService.updateAddress(address);
 
-        System.out.println(userService.getById(1L).getAddress());*/
+        System.out.println(addressService.getById(address.getId()));
 
-        userService.getAllUsers().forEach(System.out::println);
+        System.out.println(orderService.getById(4L));
+        System.out.println(userService.getById(1L));
+        System.out.println(deliveryService.getById(3L));
     }
 }
