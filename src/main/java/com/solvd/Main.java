@@ -41,5 +41,7 @@ public class Main {
         System.out.println(orderService.getById(4L));
         System.out.println(userService.getById(1L));
         System.out.println(deliveryService.getById(3L));
+
+        userService.getAllUsers().forEach(System.out::println);
     }
 }

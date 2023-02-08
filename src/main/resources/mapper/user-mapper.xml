@@ -25,7 +25,7 @@
     </select>
 
     <select id="getAllUsers" resultMap="userResultMap" >
-        SELECT * FROM users
+        SELECT <include refid="body"/> FROM users u
     </select>
 
     <insert id="createEntity" useGeneratedKeys="true" keyProperty="id">
