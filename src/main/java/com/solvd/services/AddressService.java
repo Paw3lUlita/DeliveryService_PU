@@ -1,11 +1,7 @@
 package com.solvd.services;
 
 import com.solvd.dao.interfaces.IAddressDAO;
-import com.solvd.dao.mySQL.CarDAO;
-import com.solvd.dao.mySQL.UserDAO;
 import com.solvd.models.Address;
-import com.solvd.models.Car;
-import com.solvd.models.User;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -29,7 +25,7 @@ public class AddressService {
 
     public Address getById(Long id) {
         Address address;
-        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             IAddressDAO addressDAO = sqlSession.getMapper(IAddressDAO.class);
             address = addressDAO.getEntityById(id);
         }
@@ -37,25 +33,25 @@ public class AddressService {
     }
 
     public Address saveAddress(Address address) {
-            try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
-                IAddressDAO addressDAO = sqlSession.getMapper(IAddressDAO.class);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IAddressDAO addressDAO = sqlSession.getMapper(IAddressDAO.class);
 
-                try {
-                    addressDAO.createEntity(address);
-                    sqlSession.commit();
-                } catch (Exception e) {
-                    sqlSession.rollback();
-                    e.printStackTrace();
-                }
-
+            try {
+                addressDAO.createEntity(address);
+                sqlSession.commit();
             } catch (Exception e) {
+                sqlSession.rollback();
                 e.printStackTrace();
             }
-            return address;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return address;
     }
 
     public void updateAddress(Address address) {
-        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             IAddressDAO addressDAO = sqlSession.getMapper(IAddressDAO.class);
 
             try {
@@ -72,7 +68,7 @@ public class AddressService {
     }
 
     public void removeAddressById(long id) {
-        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             IAddressDAO addressDAO = sqlSession.getMapper(IAddressDAO.class);
 
             try {
