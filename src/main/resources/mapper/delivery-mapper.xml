@@ -9,7 +9,7 @@
         d.user_id as user_id
     </sql>
 
-    <select id="getEntityById" resultMap="userResultMap">
+    <select id="getEntityById" resultMap="deliveryResultMap">
         SELECT
         <include refid="body"/>
         FROM
@@ -38,7 +38,7 @@
     </update>
 
     <delete id="removeEntity">
-        DELETE FROM users WHERE id = #{id}
+        DELETE FROM deliveries WHERE id = #{id}
     </delete>
 
     <resultMap id="deliveryResultMap" type="com.solvd.models.Delivery" autoMapping="false">

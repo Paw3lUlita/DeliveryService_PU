@@ -22,5 +22,6 @@
         <mapper resource="mapper/user-mapper.xml"/>
         <mapper resource="mapper/car-mapper.xml"/>
         <mapper resource="mapper/delivery-mapper.xml"/>
+        <mapper resource="mapper/order-mapper.xml"/>
     </mappers>
 </configuration>

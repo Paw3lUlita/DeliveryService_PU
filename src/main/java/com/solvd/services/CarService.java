@@ -1,9 +1,6 @@
 package com.solvd.services;
 
-import com.solvd.dao.interfaces.IAddressDAO;
 import com.solvd.dao.interfaces.ICarDAO;
-import com.solvd.dao.mySQL.CarDAO;
-import com.solvd.models.Address;
 import com.solvd.models.Car;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
