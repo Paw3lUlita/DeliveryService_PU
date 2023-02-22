@@ -20,13 +20,13 @@
 
     <insert id="createEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO addresses (street, house_number, postcode)
-        VALUES (#{street}, #{house_number}, #{postcode})
+        VALUES (#{street}, #{houseNumber}, #{postcode})
     </insert>
     
     <update id="updateEntity">
         UPDATE addresses SET
         street = #{street},
-        house_number = #{house_number},
+        house_number = #{houseNumber},
         postcode = #{postcode}
         WHERE id = #{id}
     </update>
