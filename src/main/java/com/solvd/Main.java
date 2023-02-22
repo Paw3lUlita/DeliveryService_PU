@@ -1,5 +1,6 @@
 package com.solvd;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solvd.dao.mySQL.AddressDAO;
 import com.solvd.dao.mySQL.UserDAO;
 import com.solvd.models.Address;
@@ -26,40 +27,16 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        Document doc = null;
-        try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            doc = builder.parse("src/main/resources/xml_files/user.xml");
-            Node userNode = doc.getElementsByTagName("user").item(0);
-            System.out.println("user id: " + userNode.getAttributes().getNamedItem("id").getTextContent());
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("User from DOM parser: ");
-        System.out.println("name: " + doc.getElementsByTagName("name").item(0).getTextContent());
-        System.out.println("surname: " + doc.getElementsByTagName("surname").item(0).getTextContent());
-        System.out.println("phoneNumber: " + doc.getElementsByTagName("phoneNumber").item(0).getTextContent());
-        System.out.println("email: " + doc.getElementsByTagName("email").item(0).getTextContent());
-        System.out.println("Address: ");
-        System.out.println("address id: " + doc.getElementsByTagName("address").item(0)
-                .getAttributes().getNamedItem("id").getTextContent());
-        System.out.println(doc.getElementsByTagName("street").item(0).getTextContent());
-        System.out.println(doc.getElementsByTagName("house_number").item(0).getTextContent());
-        System.out.println(doc.getElementsByTagName("postcode").item(0).getTextContent());
-        System.out.println("------------------------------");
-
         User u = new User();
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            JAXBContext context = JAXBContext.newInstance(User.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            u = (User) unmarshaller.unmarshal(new FileReader("src/main/resources/xml_files/user.xml"));
-        } catch (JAXBException | FileNotFoundException e) {
+            u = objectMapper.readValue(new File("src/main/resources/json_files/user.json"), User.class);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println("User from JAXB: ");
+        System.out.println("User mapped by Jackson: ");
         System.out.println(u);
+        System.out.println("His address: ");
         System.out.println(u.getAddress());
     }
 }
