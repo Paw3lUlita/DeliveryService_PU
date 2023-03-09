@@ -1,40 +1,86 @@
 package com.solvd.services;
 
-import com.solvd.dao.mySQL.OrderDAO;
-import com.solvd.models.Address;
-import com.solvd.models.Delivery;
+import com.solvd.dao.interfaces.IOrderDAO;
 import com.solvd.models.Order;
-import com.solvd.models.User;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.Reader;
 
 public class OrderService {
-    private OrderDAO orderDAO = new OrderDAO();
-    private DeliveryService deliveryService = new DeliveryService();
+    SqlSessionFactory sqlSessionFactory;
+
+    public OrderService() {
+        try {
+            Reader reader = Resources.getResourceAsReader("myBatis_config.xml");
+            this.sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public Order getById(Long id) {
+        Order order;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IOrderDAO orderDAO = sqlSession.getMapper(IOrderDAO.class);
+            order = orderDAO.getEntityById(id);
+        }
+        return order;
+    }
 
     public Order saveOrder(Order order) {
-        return orderDAO.createEntity(order);
-    }
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IOrderDAO orderDAO = sqlSession.getMapper(IOrderDAO.class);
 
-    public void addOrderForUser(User user, Address address) {
-        Delivery delivery = new Delivery(user, address);
-        Order order = new Order(user, deliveryService.saveDelivery(delivery));
-        saveOrder(order);
-    }
+            try {
+                orderDAO.createEntity(order);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
 
-    public Order getOrderById(long orderId) {
-        return orderDAO.getEntityById(orderId);
-    }
-
-    public List<Order> getAllOrders() {
-        return orderDAO.getAllOrders();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return order;
     }
 
     public void updateOrder(Order order) {
-        orderDAO.updateEntity(order);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IOrderDAO orderDAO = sqlSession.getMapper(IOrderDAO.class);
+
+            try {
+                orderDAO.updateEntity(order);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void deleteOrderById(long id) {
-        orderDAO.removeEntity(id);
+    public void removeOrder(long id) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IOrderDAO orderDAO = sqlSession.getMapper(IOrderDAO.class);
+
+            try {
+                orderDAO.removeEntity(id);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

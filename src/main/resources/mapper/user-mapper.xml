@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "org/apache/ibatis/builder/xml/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.dao.interfaces.IUserDAO">
+
+    <sql id="body">
+        u.id as user_id,
+        u.name as user_name,
+        u.surname as user_surname,
+        u.phone as user_phoneNumber,
+        u.email as user_email,
+        u.address_id as address_id
+    </sql>
+
+    <select id="getEntityById" resultMap="userResultMap">
+        SELECT
+        <include refid="body"/>
+        FROM
+        users u
+        WHERE id = #{id}
+    </select>
+    
+    <select id="selectAddress" resultType="com.solvd.models.Address">
+        SELECT * FROM addresses WHERE id= #{id}
+    </select>
+
+    <select id="getAllUsers" resultMap="userResultMap" >
+        SELECT <include refid="body"/> FROM users u
+    </select>
+
+    <insert id="createEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (name, surname, phone, email, address_id)
+        VALUES (#{name}, #{surname}, #{phoneNumber}, #{email}, #{address.id})
+    </insert>
+
+    <update id="updateEntity">
+        UPDATE users SET
+        name = #{name},
+        surname = #{surname},
+        phone = #{phoneNumber},
+        email = #{email},
+        address_id = #{address.id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="removeEntity">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+    <resultMap id="userResultMap" type="com.solvd.models.User" autoMapping="false">
+        <id column="user_id" property="id"/>
+        <result column="user_name" property="name"/>
+        <result column="user_surname" property="surname"/>
+        <result column="user_phoneNumber" property="phoneNumber"/>
+        <result column="user_email" property="email"/>
+        <association property="address" column="address_id" javaType="com.solvd.models.Address" select="selectAddress"/>
+    </resultMap>
+</mapper>

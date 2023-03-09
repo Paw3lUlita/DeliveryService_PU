@@ -35,4 +35,13 @@ public class Delivery {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "Delivery{" +
+                "id=" + id +
+                ", user=" + user.getName() + " " + user.getSurname() +
+                ", address=" + address +
+                '}';
+    }
 }

@@ -74,7 +74,7 @@ public class OrderDAO extends AbstractMySQLDAO implements IOrderDAO {
     }
 
     @Override
-    public Order createEntity(Order order) {
+    public void createEntity(Order order) {
         try (Connection conn = pool.getConnection()) {
 
             PreparedStatement statement =
@@ -90,11 +90,9 @@ public class OrderDAO extends AbstractMySQLDAO implements IOrderDAO {
                 order.setId(resultSet.getInt(1));
             }
             pool.returnConnection(conn);
-            return order;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 

@@ -1,34 +1,91 @@
 package com.solvd.services;
 
-import com.solvd.dao.mySQL.UserDAO;
+import com.solvd.dao.interfaces.IUserDAO;
 import com.solvd.models.User;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserService {
+    SqlSessionFactory sqlSessionFactory;
+    public UserService() {
+        try {
+            Reader reader = Resources.getResourceAsReader("myBatis_config.xml");
+            this.sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-    private UserDAO userDAO = new UserDAO();
+    }
+
+
+    public User getById(Long id) {
+        User user;
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+            user = userDAO.getEntityById(id);
+        }
+        return user;
+    }
+
+    public List<User> getAllUsers() {
+        List<User> resulList;
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+            resulList = userDAO.getAllUsers();
+        }
+        return resulList;
+    }
 
     public User saveUser(User user) {
-        return userDAO.createEntity(user);
-    }
-
-    public User getUserById(long userId) {
-        return userDAO.getEntityById(userId);
-    }
-
-    public List<User> getUsersByName(String userName) {
-        return userDAO.getAllUsers().stream()
-                .filter(user -> user.getName().equals(userName))
-                .collect(Collectors.toList());
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+            try {
+                userDAO.createEntity(user);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     public void updateUser(User user) {
-        userDAO.updateEntity(user);
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+            try {
+                userDAO.updateEntity(user);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void deleteUserById(long id) {
-        userDAO.removeEntity(id);
+    public void removeUserById(long id) {
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+            try {
+                userDAO.removeEntity(id);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }
