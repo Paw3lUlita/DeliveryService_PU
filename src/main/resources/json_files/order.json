@@ -1,0 +1,40 @@
+{
+  "order": {
+    "id": 4,
+    "user": {
+      "id": 1,
+      "name": "Pawel",
+      "surname": "Ulita",
+      "phoneNumber": 56786565,
+      "email": "opkokokok",
+      "address": {
+        "id": 8,
+        "street": "Some Street",
+        "house_number": 23,
+        "postcode": "ert564"
+      }
+    },
+    "delivery": {
+      "id": 3,
+      "user": {
+        "id": 1,
+        "name": "Pawel",
+        "surname": "Ulita",
+        "phoneNumber": 56786565,
+        "email": "opkokokok",
+        "address": {
+          "id": 8,
+          "street": "Some Street",
+          "house_number": 23,
+          "postcode": "ert564"
+        }
+      },
+      "address": {
+        "id": 9,
+        "street": "Baker Street",
+        "house_number": 56,
+        "postcode": "456ytr"
+      }
+    }
+  }
+}
